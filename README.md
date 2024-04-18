@@ -1,1 +1,1 @@
-# Real Time Transcription of Whisper CPP 
+# Real Time Transcription of Whisper CPP  
