@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio Transcription</title>
+  </head>
+  <body>
+    <h1>Audio Transcription</h1>
+    <form
+      id="uploadForm"
+      action="http://localhost:5000/transcribe"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <label for="audioFile">Select an audio file:</label>
+      <input type="file" id="audioFile" name="file" accept="audio/*" required />
+      <button type="submit">Transcribe</button>
+    </form>
+    <div id="transcriptionResult"></div>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const form = e.target;
+          const formData = new FormData(form);
+          console.log("Form Data: ", form);
+          try {
+            const response = await fetch(form.action, {
+              method: "POST",
+              body: formData,
+            });
+
+            console.log("Response: ", response);
+            const data = await response.json();
+            displayTranscription(data);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+
+      function displayTranscription(data) {
+        const transcriptionResult = document.getElementById(
+          "transcriptionResult"
+        );
+        transcriptionResult.innerHTML = "";
+        if (data.error) {
+          console.log(data.error);
+          transcriptionResult.textContent = `Error: ${data.error}`;
+        } else if (data.transcription) {
+          console.log("Here");
+          const transcriptionList = document.createElement("ul");
+          data.transcription.forEach((entry) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = `[${entry.start_time} - ${entry.end_time}]: ${entry.text}`;
+            transcriptionList.appendChild(listItem);
+          });
+          transcriptionResult.appendChild(transcriptionList);
+        }
+      }
+
+      async function displaySRTContents() {
+            try { 
+                const response = await fetch('Test.wav.srt');
+                const srtText = await response.text();
+ 
+                const lines = srtText.split('\n');
+                const srtContentsDiv = document.getElementById('srtContents');
+                const srtList = document.createElement('ul');
+                lines.forEach((line, index) => {
+                    if (line.trim() !== '') {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = line.trim();
+                        srtList.appendChild(listItem);
+                    }
+                });
+                srtContentsDiv.appendChild(srtList);
+            } catch (error) {
+                console.error('Error fetching or displaying SRT file:', error);
+            }
+        } 
+    </script>
+  </body>
+</html>

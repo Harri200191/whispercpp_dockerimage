@@ -1,0 +1,6 @@
+"git+https://github.com/stlukey/whispercpp.py"
+flask
+flask-cors
+flask-restful
+socket
+tempfile

@@ -1,0 +1,7 @@
+__pycache__
+.vscode
+ffmpeg-2023-10-12-git-a7663c9604-full_build
+whisper.cpp-1.5.4
+WHISPER_EXE_FILES
+*.mp3
+*.srt 
