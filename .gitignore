@@ -5,3 +5,4 @@ whisper.cpp-1.5.4
 WHISPER_EXE_FILES
 *.mp3
 *.srt 
+*.wav
